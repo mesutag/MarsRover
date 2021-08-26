@@ -1,7 +1,7 @@
 ﻿using MarsRover.Application.Commands.CreatePlateau;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application
+namespace MarsRover.UnitTests.Application.CreatePlateau
 {
     public class CreatePlateauCommandHelperTest
     {

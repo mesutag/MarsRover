@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application
+namespace MarsRover.UnitTests.Application.DeployRover
 {
     public class DeployRoverCommandHandlerTest
     {
@@ -65,7 +65,7 @@ namespace MarsRover.UnitTests.Application
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }
-       
+
 
     }
 }

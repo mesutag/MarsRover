@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application
+namespace MarsRover.UnitTests.Application.CreatePlateau
 {
     public class CreatePlateauCommandHandlerTest
     {
