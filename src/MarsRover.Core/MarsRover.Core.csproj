@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AggregateRoots\RoverAggregate\**" />
+    <EmbeddedResource Remove="AggregateRoots\RoverAggregate\**" />
+    <None Remove="AggregateRoots\RoverAggregate\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="AggregateRoots\PlateauAggregate\Missionfff.cs" />
+  </ItemGroup>
+
+</Project>
