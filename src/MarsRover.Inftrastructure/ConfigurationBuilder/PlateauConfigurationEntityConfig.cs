@@ -18,13 +18,6 @@ namespace MarsRover.Inftrastructure.ConfigurationBuilder
             modelBuilder.Entity<Plateau>().OwnsOne(x => x.Size);
             modelBuilder.Entity<Rover>().OwnsOne(x => x.Position);
 
-            modelBuilder.Entity<Rover>(builder =>
-            {
-                builder.HasKey(p => p.Id);
-                var navigation = builder.Metadata.FindNavigation(nameof(Rover.RoverMovement));
-                navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
-                navigation.SetIsEagerLoaded(true);
-            });
         }
     }
 }

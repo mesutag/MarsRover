@@ -19,7 +19,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
         public Rover(RoverPosition position) : this()
         {
             if (position == null)
-                throw new PlateauException("Invalid position");
+                throw new InvalidPositionException("Invalid position");
             Position = position;
         }
         public void TurnLeft()

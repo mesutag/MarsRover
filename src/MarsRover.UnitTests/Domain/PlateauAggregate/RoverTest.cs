@@ -1,4 +1,5 @@
 ﻿using MarsRover.Core.AggregateRoots.PlateauAggregate;
+using MarsRover.Core.AggregateRoots.PlateauAggregate.Exceptions;
 using MarsRover.Core.AggregateRoots.PlateauAggregate.ValueObjects;
 using Xunit;
 
@@ -19,6 +20,9 @@ namespace MarsRover.UnitTests.Domain
 
             Assert.Equal(expected, rover.Position.Direction);
         }
+
+        
+
         [Theory]
         [InlineData(new object[] { Direction.N, Direction.E })]
         [InlineData(new object[] { Direction.E, Direction.S })]
@@ -32,6 +36,8 @@ namespace MarsRover.UnitTests.Domain
 
             Assert.Equal(expected, rover.Position.Direction);
         }
+
+
         [Theory]
         [InlineData(new object[] { 1, 2, Direction.N, 1, 3 })]
         [InlineData(new object[] { 1, 2, Direction.E, 2, 2 })]
@@ -44,6 +50,12 @@ namespace MarsRover.UnitTests.Domain
 
             Assert.Equal(expectedX, rover.Position.X);
             Assert.Equal(expectedY, rover.Position.Y);
+        }
+
+        [Fact]
+        public void CreateRover_Position_Is_Null_Throw_Exception()
+        {
+            Assert.Throws<InvalidPositionException>(() => new Rover(null));
         }
     }
 
