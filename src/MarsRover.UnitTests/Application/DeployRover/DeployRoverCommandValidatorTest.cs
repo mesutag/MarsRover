@@ -9,7 +9,8 @@ namespace MarsRover.UnitTests.Application.DeployRover
         private readonly DeployRoverCommandValidator validator;
         public DeployRoverCommandValidatorTest()
         {
-            validator = new DeployRoverCommandValidator();
+            IDeployRoverCommandHelper deployRoverCommandHelper = new DeployRoverCommandHelper();
+            validator = new DeployRoverCommandValidator(deployRoverCommandHelper);
         }
 
         [Theory]

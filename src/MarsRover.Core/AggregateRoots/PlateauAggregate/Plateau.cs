@@ -66,7 +66,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
             else if (IsOutOfBoundariesLandedPosition(nextPosition.X, nextPosition.Y))
                 throw new OutOfPlateaueBoundaryException("Rover's movement position is out of plateau boundaries!");
         }
-        public Rover GetRover(Guid roverId)
+        private Rover GetRover(Guid roverId)
         {
             return _landedRovers.FirstOrDefault(p => p.Id == roverId);
         }

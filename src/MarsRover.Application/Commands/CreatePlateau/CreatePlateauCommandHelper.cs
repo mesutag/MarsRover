@@ -3,9 +3,13 @@ using System.Text.RegularExpressions;
 
 namespace MarsRover.Application.Commands.CreatePlateau
 {
-    public static class CreatePlateauCommandHelper
+    public interface ICreatePlateauCommandHelper
     {
-        public static Size ParsePlateauSize(string plateauSize)
+        Size ParsePlateauSize(string plateauSize);
+    }
+    public class CreatePlateauCommandHelper : ICreatePlateauCommandHelper
+    {
+        public Size ParsePlateauSize(string plateauSize)
         {
             string regexPattern = @"^([0-9]+) ([0-9]+)$";
             Regex pos = new(regexPattern);
@@ -19,4 +23,5 @@ namespace MarsRover.Application.Commands.CreatePlateau
             return null;
         }
     }
+    
 }

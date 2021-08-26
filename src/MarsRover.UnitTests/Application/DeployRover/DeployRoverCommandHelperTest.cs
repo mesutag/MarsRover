@@ -5,8 +5,10 @@ namespace MarsRover.UnitTests.Application.DeployRover
 {
     public class DeployRoverCommandHelperTest
     {
+        private readonly IDeployRoverCommandHelper deployRoverCommandHelper;
         public DeployRoverCommandHelperTest()
         {
+            deployRoverCommandHelper = new DeployRoverCommandHelper();
         }
 
         [Theory]
@@ -22,7 +24,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "1 1 N E" })]
         public void GetPosition_When_Set_Invalid_RoverPosition_Then_Return_Null(string roverPosition)
         {
-            var actual = DeployRoverCommandHelper.ParsePosition(roverPosition);
+            var actual = deployRoverCommandHelper.ParsePosition(roverPosition);
             Assert.Null(actual);
         }
 
@@ -37,7 +39,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "lrmrmrmrl" })]
         public void GetDirections_When_Set_Invalid_RoverDirection_Then_Return_Null(string directions)
         {
-            var actual = DeployRoverCommandHelper.ParseDirections(directions);
+            var actual = deployRoverCommandHelper.ParseDirections(directions);
             Assert.Null(actual);
         }
 

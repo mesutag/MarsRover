@@ -8,7 +8,8 @@ namespace MarsRover.UnitTests.Application.CreatePlateau
         private readonly CreatePlateauCommandValidator validator;
         public CreatePlateauCommandValidatorTest()
         {
-            validator = new CreatePlateauCommandValidator();
+            ICreatePlateauCommandHelper createPlateauCommandHelper = new CreatePlateauCommandHelper();
+            validator = new CreatePlateauCommandValidator(createPlateauCommandHelper);
         }
 
         [Theory]

@@ -11,14 +11,16 @@ namespace MarsRover.Application.Commands.DeployRover
     public class DeployRoverCommandHandler : IRequestHandler<DeployRoverCommand, CommandResponse>
     {
         private readonly IPlateauRepository plateauRepository;
-        public DeployRoverCommandHandler(IPlateauRepository plateauRepository)
+        private readonly IDeployRoverCommandHelper deployRoverCommandHelper;
+        public DeployRoverCommandHandler(IPlateauRepository plateauRepository, IDeployRoverCommandHelper deployRoverCommandHelper)
         {
             this.plateauRepository = plateauRepository;
+            this.deployRoverCommandHelper = deployRoverCommandHelper;
         }
         public async Task<CommandResponse> Handle(DeployRoverCommand request, CancellationToken cancellationToken)
         {
-            RoverPosition position = DeployRoverCommandHelper.ParsePosition(request.RoverPosition);
-            List<MovementDirection> directions = DeployRoverCommandHelper.ParseDirections(request.RoverDirections);
+            RoverPosition position = deployRoverCommandHelper.ParsePosition(request.RoverPosition);
+            List<MovementDirection> directions = deployRoverCommandHelper.ParseDirections(request.RoverDirections);
 
             Plateau plateau = await plateauRepository.FindAsync(request.PlateauId);
 

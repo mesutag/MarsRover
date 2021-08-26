@@ -5,9 +5,14 @@ using System.Text.RegularExpressions;
 
 namespace MarsRover.Application.Commands.DeployRover
 {
-    public static class DeployRoverCommandHelper
+    public interface IDeployRoverCommandHelper
     {
-        public static RoverPosition ParsePosition(string roverPositionInput)
+        RoverPosition ParsePosition(string roverPositionInput);
+        List<MovementDirection> ParseDirections(string inputDirections);
+    }
+    public class DeployRoverCommandHelper : IDeployRoverCommandHelper
+    {
+        public RoverPosition ParsePosition(string roverPositionInput)
         {
             string regexPattern = @"^([0-9]+) ([0-9]+) ([NSEW])$";
             Regex pos = new(regexPattern);
@@ -21,7 +26,7 @@ namespace MarsRover.Application.Commands.DeployRover
             }
             return null;
         }
-        public static List<MovementDirection> ParseDirections(string inputDirections)
+        public List<MovementDirection> ParseDirections(string inputDirections)
         {
             List<MovementDirection> movementDirections = new();
             string regexPattern = @"^[LRM]+$";

@@ -19,6 +19,7 @@ namespace MarsRover.Application.Registry
             services.AddDbContext<MarsRoverContext>(options => options.UseInMemoryDatabase(databaseName: "MarsRoverDatabase"));
             services.AddRepositories();
             services.AddValidations();
+            services.AddCommandHelpers();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             return services;
 
@@ -32,6 +33,13 @@ namespace MarsRover.Application.Registry
         {
             services.AddTransient<IValidator<CreatePlateauCommand>, CreatePlateauCommandValidator>();
             services.AddTransient<IValidator<DeployRoverCommand>, DeployRoverCommandValidator>();
+            return services;
+
+        }
+        private static IServiceCollection AddCommandHelpers(this IServiceCollection services)
+        {
+            services.AddScoped<ICreatePlateauCommandHelper, CreatePlateauCommandHelper>();
+            services.AddScoped<IDeployRoverCommandHelper, DeployRoverCommandHelper>();
             return services;
 
         }

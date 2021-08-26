@@ -5,8 +5,10 @@ namespace MarsRover.UnitTests.Application.CreatePlateau
 {
     public class CreatePlateauCommandHelperTest
     {
+        private readonly ICreatePlateauCommandHelper createPlateauCommandHelper;
         public CreatePlateauCommandHelperTest()
         {
+            createPlateauCommandHelper = new CreatePlateauCommandHelper();
         }
 
         [Theory]
@@ -17,7 +19,7 @@ namespace MarsRover.UnitTests.Application.CreatePlateau
         [InlineData(new object[] { "1 2 3" })]
         public void GetPlateauSize_When_InvalidFormat_Return_Null(string input)
         {
-            var actual = CreatePlateauCommandHelper.ParsePlateauSize(input);
+            var actual = createPlateauCommandHelper.ParsePlateauSize(input);
             Assert.Null(actual);
         }
     }

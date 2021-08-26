@@ -10,13 +10,15 @@ namespace MarsRover.Application.Commands.CreatePlateau
     public class CreatePlateauCommandHandler : IRequestHandler<CreatePlateauCommand, CommandResponse>
     {
         private readonly IPlateauRepository plateauRepository;
-        public CreatePlateauCommandHandler(IPlateauRepository plateauRepository)
+        private readonly ICreatePlateauCommandHelper createPlateauCommandHelper;
+        public CreatePlateauCommandHandler(IPlateauRepository plateauRepository, ICreatePlateauCommandHelper createPlateauCommandHelper)
         {
             this.plateauRepository = plateauRepository;
+            this.createPlateauCommandHelper = createPlateauCommandHelper;
         }
         public async Task<CommandResponse> Handle(CreatePlateauCommand request, CancellationToken cancellationToken)
         {
-            Size plateauSize = CreatePlateauCommandHelper.ParsePlateauSize(request.PlateauSize);
+            Size plateauSize = createPlateauCommandHelper.ParsePlateauSize(request.PlateauSize);
 
             Plateau plateau = new(plateauSize);
             await plateauRepository.CreatePlateauAsync(plateau);
