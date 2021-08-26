@@ -4,19 +4,19 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MarsRover.Application.Commands.StartRover
+namespace MarsRover.Application.Commands.ExplorePlateau
 {
-    public class StartRoverMissionCommandHandler : IRequestHandler<StartRoverMissionCommand, CommandResponse>
+    public class ExplorePlateauCommandHandler : IRequestHandler<ExplorePlateauCommand, CommandResponse>
     {
         private readonly IPlateauRepository plateauRepository;
-        public StartRoverMissionCommandHandler(IPlateauRepository plateauRepository)
+        public ExplorePlateauCommandHandler(IPlateauRepository plateauRepository)
         {
             this.plateauRepository = plateauRepository;
         }
-        public async Task<CommandResponse> Handle(StartRoverMissionCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(ExplorePlateauCommand request, CancellationToken cancellationToken)
         {
             Plateau plateau = await plateauRepository.FindAsync(request.PlateauId);
-            plateau.StartRover(request.RoverId);
+            plateau.ExplorePlateau(request.RoverId);
             plateauRepository.UpdatePlateau(plateau);
             await plateauRepository.UnitOfWork.SaveChangesAsync(default);
 

@@ -1,16 +1,17 @@
-﻿using MarsRover.Application.Commands.DeployRover;
+﻿using MarsRover.Application.Commands.LandRover;
+using MarsRover.Application.Commands.LandRover;
 using System;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application.DeployRover
+namespace MarsRover.UnitTests.Application.LandRover
 {
-    public class DeployRoverCommandValidatorTest
+    public class LandRoverCommandValidatorTest
     {
-        private readonly DeployRoverCommandValidator validator;
-        public DeployRoverCommandValidatorTest()
+        private readonly LandRoverCommandValidator validator;
+        public LandRoverCommandValidatorTest()
         {
-            IDeployRoverCommandHelper deployRoverCommandHelper = new DeployRoverCommandHelper();
-            validator = new DeployRoverCommandValidator(deployRoverCommandHelper);
+            ILandRoverCommandHelper landRoverCommandHelper = new LandRoverCommandHelper();
+            validator = new LandRoverCommandValidator(landRoverCommandHelper);
         }
 
         [Theory]
@@ -24,7 +25,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "1 1 N E" })]
         public void Validator_When_Set_Invalid_RoverPosition_Then_Return_False(string roverPosition)
         {
-            var command = new DeployRoverCommand(Guid.NewGuid(), roverPosition, "L");
+            var command = new LandRoverCommand(Guid.NewGuid(), roverPosition, "L");
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }
@@ -38,7 +39,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "lrmrmrmrl" })]
         public void Validator_When_Set_Invalid_RoverDirection_Then_Return_False(string directions)
         {
-            var command = new DeployRoverCommand(Guid.NewGuid(), "1 2 N", directions);
+            var command = new LandRoverCommand(Guid.NewGuid(), "1 2 N", directions);
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }

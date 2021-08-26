@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using MarsRover.Application.Registry;
-using MarsRover.Application.Commands.DeployRover;
 using MarsRover.Application.Commands.CreatePlateau;
-using MarsRover.Application.Commands.StartRover;
+using MarsRover.Application.Commands.LandRover;
+using MarsRover.Application.Commands.ExplorePlateau;
 
 namespace MarsRover.ConsoleApp
 {
@@ -15,7 +15,7 @@ namespace MarsRover.ConsoleApp
         static async Task Main(string[] args)
         {
             var serviceProvider = Initialize();
-            var _mediator = serviceProvider.GetRequiredService<IMediator>();
+            var mediator = serviceProvider.GetRequiredService<IMediator>();
 
             do
             {
@@ -25,7 +25,7 @@ namespace MarsRover.ConsoleApp
                     var plateauSize = Console.ReadLine();
 
                     var createPlateauCommand = new CreatePlateauCommand(plateauSize);
-                    var createPlateauResponse = await _mediator.Send(createPlateauCommand);
+                    var createPlateauResponse = await mediator.Send(createPlateauCommand);
 
                     do
                     {
@@ -39,10 +39,10 @@ namespace MarsRover.ConsoleApp
                             Console.WriteLine("Enter Rover Directions:");
                             var roverDirections = Console.ReadLine().Trim();
 
-                            var deployRoverCommand = new DeployRoverCommand(createPlateauResponse.Id, roverPosition, roverDirections);
-                            var deployRoverResponse = await _mediator.Send(deployRoverCommand);
+                            var landRoverCommand = new LandRoverCommand(createPlateauResponse.Id, roverPosition, roverDirections);
+                            var landRoverResponse = await mediator.Send(landRoverCommand);
 
-                            Console.WriteLine("Do you want to deploy another rover this plateau? (Y/N)");
+                            Console.WriteLine("Do you want to land another rover this plateau? (Y/N)");
                             var result = Console.ReadLine().Trim();
                             if (result.Equals("N", StringComparison.InvariantCultureIgnoreCase))
                             {
@@ -62,14 +62,14 @@ namespace MarsRover.ConsoleApp
                         }
                     } while (true);
 
-                    var plateauGetResponse = await _mediator.Send(new GetPlateauByIdQuery(createPlateauResponse.Id));
+                    var plateauGetResponse = await mediator.Send(new GetPlateauByIdQuery(createPlateauResponse.Id));
 
                     foreach (var rover in plateauGetResponse.Rovers)
                     {
-                        await _mediator.Send(new StartRoverMissionCommand(plateauGetResponse.PlateauId, rover.RoverId));
+                        await mediator.Send(new ExplorePlateauCommand(plateauGetResponse.PlateauId, rover.RoverId));
                     }
 
-                    plateauGetResponse = await _mediator.Send(new GetPlateauByIdQuery(createPlateauResponse.Id));
+                    plateauGetResponse = await mediator.Send(new GetPlateauByIdQuery(createPlateauResponse.Id));
                     foreach (var rover in plateauGetResponse.Rovers)
                     {
                         Console.WriteLine($"{rover.RoverPosition.X} {rover.RoverPosition.Y} {rover.RoverPosition.Direction}");

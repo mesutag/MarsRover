@@ -20,23 +20,12 @@ namespace MarsRover.Inftrastructure.Repository
         {
             this.marsRoverContext = marsRoverContext;
         }
-        //public async Task<IEnumerable<Plateau>> GetPlateausAsync(Guid plateauId, List<Guid> roverIds)
-        //{
-        //    return await Task.FromResult(marsRoverContext.Plateau
-        //                                    .Where(p => p.Id == plateauId));
-        //}
 
         public async Task<Plateau> FindAsync(Guid plateauId)
         {
             return await marsRoverContext.Plateau
                                            .FirstOrDefaultAsync(p => p.Id == plateauId);
         }
-
-        //public async Task<IEnumerable<Plateau>> GetAsync(List<Guid> plateauIds)
-        //{
-        //    return await Task.FromResult(marsRoverContext.Plateau
-        //                                   .Where(p => plateauIds.Contains(p.Id)));
-        //}
 
         public void UpdatePlateau(Plateau plateau)
         {

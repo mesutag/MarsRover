@@ -25,9 +25,9 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
         public void LandRover(RoverPosition position, List<MovementDirection> movementDirections)
         {
             Rover rover = new(position);
-            if (AnyLandedRoverPosition(position.X, position.Y, GetRoverPositionsOnPlateau(rover.Id)))
+            if (AnyAnotherRoverDestinationPosition(position.X, position.Y, GetRoverPositionsOnPlateau(rover.Id)))
                 throw new ConflictException($"There is another rover at landed position X:{position.X} Y:{position.Y}!");
-            else if (IsOutOfBoundariesLandedPosition(position.X, position.Y))
+            else if (IsOutOfBoundariesTheDestinationPosition(position.X, position.Y))
                 throw new OutOfPlateaueBoundaryException($"Landed position is out of plateau boundaries! Plateu area is width {Size.Width} and height {Size.Height}");
 
 
@@ -35,7 +35,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
 
             _landedRovers.Add(rover);
         }
-        public void StartRover(Guid roverId)
+        public void ExplorePlateau(Guid roverId)
         {
             var rover = GetRover(roverId);
 
@@ -61,9 +61,9 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
         {
             RoverPosition nextPosition = rover.Position.CalculateNextPosition();
 
-            if (AnyLandedRoverPosition(nextPosition.X, nextPosition.Y, anotherRoverPositions))
+            if (AnyAnotherRoverDestinationPosition(nextPosition.X, nextPosition.Y, anotherRoverPositions))
                 throw new ConflictException("Crash Alert! There is another rover at movement position.");
-            else if (IsOutOfBoundariesLandedPosition(nextPosition.X, nextPosition.Y))
+            else if (IsOutOfBoundariesTheDestinationPosition(nextPosition.X, nextPosition.Y))
                 throw new OutOfPlateaueBoundaryException("Rover's movement position is out of plateau boundaries!");
         }
         private Rover GetRover(Guid roverId)
@@ -82,11 +82,11 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
         {
             return LandedRovers.Where(p => p.Id != excludedRoverId).Select(p => p.Position).ToList();
         }
-        public bool AnyLandedRoverPosition(int x, int y, List<RoverPosition> anotherRoverPositions)
+        public bool AnyAnotherRoverDestinationPosition(int x, int y, List<RoverPosition> anotherRoverPositions)
         {
             return anotherRoverPositions.Any(p => p.Y == y && p.X == x);
         }
-        public bool IsOutOfBoundariesLandedPosition(int x, int y)
+        public bool IsOutOfBoundariesTheDestinationPosition(int x, int y)
         {
             return y < 0 || y > Size.Height || x < 0 || x > Size.Width;
         }

@@ -6,21 +6,21 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MarsRover.Application.Commands.DeployRover
+namespace MarsRover.Application.Commands.LandRover
 {
-    public class DeployRoverCommandHandler : IRequestHandler<DeployRoverCommand, CommandResponse>
+    public class LandRoverCommandHandler : IRequestHandler<LandRoverCommand, CommandResponse>
     {
         private readonly IPlateauRepository plateauRepository;
-        private readonly IDeployRoverCommandHelper deployRoverCommandHelper;
-        public DeployRoverCommandHandler(IPlateauRepository plateauRepository, IDeployRoverCommandHelper deployRoverCommandHelper)
+        private readonly ILandRoverCommandHelper landRoverCommandHelper;
+        public LandRoverCommandHandler(IPlateauRepository plateauRepository, ILandRoverCommandHelper landRoverCommandHelper)
         {
             this.plateauRepository = plateauRepository;
-            this.deployRoverCommandHelper = deployRoverCommandHelper;
+            this.landRoverCommandHelper = landRoverCommandHelper;
         }
-        public async Task<CommandResponse> Handle(DeployRoverCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(LandRoverCommand request, CancellationToken cancellationToken)
         {
-            RoverPosition position = deployRoverCommandHelper.ParsePosition(request.RoverPosition);
-            List<MovementDirection> directions = deployRoverCommandHelper.ParseDirections(request.RoverDirections);
+            RoverPosition position = landRoverCommandHelper.ParsePosition(request.RoverPosition);
+            List<MovementDirection> directions = landRoverCommandHelper.ParseDirections(request.RoverDirections);
 
             Plateau plateau = await plateauRepository.FindAsync(request.PlateauId);
 

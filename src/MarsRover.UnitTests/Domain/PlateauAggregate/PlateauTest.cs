@@ -11,13 +11,13 @@ namespace MarsRover.UnitTests.Domain
     {
         [Theory]
         [MemberData(nameof(MovementListData.Data), MemberType = typeof(MovementListData))]
-        public void Execute_Mission_Success(Size plateauSize, RoverPosition deployedRoverPosition, List<MovementDirection> movementDirections, RoverPosition expectedPosition)
+        public void Execute_ExplorePlateau_Success(Size plateauSize, RoverPosition landedRoverPosition, List<MovementDirection> movementDirections, RoverPosition expectedPosition)
         {
             Plateau plateau = new(plateauSize);
-            plateau.LandRover(deployedRoverPosition, movementDirections);
+            plateau.LandRover(landedRoverPosition, movementDirections);
             var rover = plateau.LandedRovers.First();
 
-            plateau.StartRover(rover.Id);
+            plateau.ExplorePlateau(rover.Id);
 
             Assert.Equal(expectedPosition.X, rover.Position.X);
             Assert.Equal(expectedPosition.Y, rover.Position.Y);
@@ -81,7 +81,7 @@ namespace MarsRover.UnitTests.Domain
         [InlineData(new object[] { 5, 5, 1, 2, Direction.W, MovementDirection.M, 0, 2, Direction.W })]
         [InlineData(new object[] { 5, 5, 3, 2, Direction.S, MovementDirection.L, 3, 2, Direction.E })]
         [InlineData(new object[] { 5, 5, 3, 2, Direction.S, MovementDirection.R, 3, 2, Direction.W })]
-        public void ExecutePlateuMission_Execute_Direction_There_Is_No_AnotherRover_Success(int plateauWidth, int plateauHeight, int x, int y, Direction inputDirection, MovementDirection movementDirection, int expectedX, int expectedY, Direction expectedDirection)
+        public void ExplorePlatueau_Direction_There_Is_No_AnotherRover_Return_Expected(int plateauWidth, int plateauHeight, int x, int y, Direction inputDirection, MovementDirection movementDirection, int expectedX, int expectedY, Direction expectedDirection)
         {
             Size size = new(plateauWidth, plateauHeight);
             Plateau plateau = new(size);
@@ -89,7 +89,7 @@ namespace MarsRover.UnitTests.Domain
             plateau.LandRover(roverPosition, new List<MovementDirection> { movementDirection });
             var rover = plateau.LandedRovers[0];
 
-            plateau.StartRover(rover.Id);
+            plateau.ExplorePlateau(rover.Id);
 
             Assert.Equal(expectedDirection, rover.Position.Direction);
             Assert.Equal(expectedX, rover.Position.X);
@@ -101,7 +101,7 @@ namespace MarsRover.UnitTests.Domain
         [InlineData(new object[] { 4, 2, Direction.E, 4, 2 })]
         [InlineData(new object[] { 3, 2, Direction.N, 3, 2 })]
         [InlineData(new object[] { 3, 2, Direction.S, 3, 2 })]
-        public void CheckAnyLandedRoverPosition_Return_False(int x, int y, Direction inputDirection,
+        public void AnyAnotherRoverDestinationPosition_Return_False(int x, int y, Direction inputDirection,
            int anotherRoverPositionX, int anotherRoverPositionY)
         {
             Size size = new(5, 5);
@@ -113,7 +113,7 @@ namespace MarsRover.UnitTests.Domain
             };
 
 
-            var actual = plateau.AnyLandedRoverPosition(x, y, otherRoverPositions);
+            var actual = plateau.AnyAnotherRoverDestinationPosition(x, y, otherRoverPositions);
             Assert.True(actual);
         }
 
@@ -129,7 +129,7 @@ namespace MarsRover.UnitTests.Domain
             Plateau plateau = new(plateauSize);
 
 
-            var actual = plateau.IsOutOfBoundariesLandedPosition(x, y);
+            var actual = plateau.IsOutOfBoundariesTheDestinationPosition(x, y);
 
             Assert.True(actual);
         }

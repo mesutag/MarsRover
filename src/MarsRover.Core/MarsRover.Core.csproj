@@ -10,8 +10,4 @@
     <None Remove="AggregateRoots\RoverAggregate\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="AggregateRoots\PlateauAggregate\Missionfff.cs" />
-  </ItemGroup>
-
 </Project>

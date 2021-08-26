@@ -3,10 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace MarsRover.Application.Commands.CreatePlateau
 {
-    public interface ICreatePlateauCommandHelper
-    {
-        Size ParsePlateauSize(string plateauSize);
-    }
     public class CreatePlateauCommandHelper : ICreatePlateauCommandHelper
     {
         public Size ParsePlateauSize(string plateauSize)

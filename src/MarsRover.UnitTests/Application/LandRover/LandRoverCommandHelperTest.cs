@@ -1,14 +1,14 @@
-﻿using MarsRover.Application.Commands.DeployRover;
+﻿using MarsRover.Application.Commands.LandRover;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application.DeployRover
+namespace MarsRover.UnitTests.Application.LandRover
 {
-    public class DeployRoverCommandHelperTest
+    public class LandRoverCommandHelperTest
     {
-        private readonly IDeployRoverCommandHelper deployRoverCommandHelper;
-        public DeployRoverCommandHelperTest()
+        private readonly ILandRoverCommandHelper landRoverCommandHelper;
+        public LandRoverCommandHelperTest()
         {
-            deployRoverCommandHelper = new DeployRoverCommandHelper();
+            landRoverCommandHelper = new LandRoverCommandHelper();
         }
 
         [Theory]
@@ -24,7 +24,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "1 1 N E" })]
         public void GetPosition_When_Set_Invalid_RoverPosition_Then_Return_Null(string roverPosition)
         {
-            var actual = deployRoverCommandHelper.ParsePosition(roverPosition);
+            var actual = landRoverCommandHelper.ParsePosition(roverPosition);
             Assert.Null(actual);
         }
 
@@ -39,7 +39,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "lrmrmrmrl" })]
         public void GetDirections_When_Set_Invalid_RoverDirection_Then_Return_Null(string directions)
         {
-            var actual = deployRoverCommandHelper.ParseDirections(directions);
+            var actual = landRoverCommandHelper.ParseDirections(directions);
             Assert.Null(actual);
         }
 

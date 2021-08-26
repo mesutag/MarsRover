@@ -1,6 +1,7 @@
 ﻿using MarsRover.Application;
 using MarsRover.Application.Behaivor;
-using MarsRover.Application.Commands.DeployRover;
+using MarsRover.Application.Commands.LandRover;
+using MarsRover.Application.Commands.LandRover;
 using MarsRover.Application.Model;
 using MarsRover.Core.AggregateRoots.PlateauAggregate;
 using MarsRover.Core.AggregateRoots.PlateauAggregate.ValueObjects;
@@ -14,23 +15,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application.DeployRover
+namespace MarsRover.UnitTests.Application.LandRover
 {
-    public class DeployRoverCommandHandlerTest
+    public class LandRoverCommandHandlerTest
     {
-        private readonly DeployRoverCommandValidator validator;
+        private readonly LandRoverCommandValidator validator;
         private readonly Mock<IPlateauRepository> plateauRepository;
-        private readonly Mock<IDeployRoverCommandHelper> deployRoverCommandHelper;
-        public DeployRoverCommandHandlerTest()
+        private readonly Mock<ILandRoverCommandHelper> landRoverCommandHelper;
+        public LandRoverCommandHandlerTest()
         {
             plateauRepository = new Mock<IPlateauRepository>();
-            deployRoverCommandHelper = new Mock<IDeployRoverCommandHelper>();
-            validator = new DeployRoverCommandValidator(deployRoverCommandHelper.Object);
+            landRoverCommandHelper = new Mock<ILandRoverCommandHelper>();
+            validator = new LandRoverCommandValidator(landRoverCommandHelper.Object);
         }
         [Theory]
         [InlineData(new object[] { 5, 5, "1 2 N", "LMLMLMLMM" })]
         [InlineData(new object[] { 5, 5, "3 3 N", "MMRMMRMRRM" })]
-        public async Task DeployRover_Success(int plateauWidth, int plateauHeight, string roverPosition, string movementDirections)
+        public async Task LandRover_Success(int plateauWidth, int plateauHeight, string roverPosition, string movementDirections)
         {
             Size size = new(plateauWidth, plateauHeight);
             Plateau plateau = new(size);
@@ -38,11 +39,11 @@ namespace MarsRover.UnitTests.Application.DeployRover
             plateauRepository.Setup(x => x.FindAsync(plateau.Id)).Returns(Task.FromResult(plateau));
             plateauRepository.Setup(x => x.UnitOfWork.SaveChangesAsync(default)).Returns(Task.FromResult(1));
 
-            var command = new DeployRoverCommand(plateau.Id, roverPosition, movementDirections);
+            var command = new LandRoverCommand(plateau.Id, roverPosition, movementDirections);
             //RequestValidationBehavior fluent validation step
-            DeployRoverCommandValidator validationRules = new(new DeployRoverCommandHelper());
+            LandRoverCommandValidator validationRules = new(new LandRoverCommandHelper());
             var validationResult = validationRules.Validate(command).Errors.ToList();
-            deployRoverCommandHelper.Setup(p => p.ParsePosition(roverPosition))
+            landRoverCommandHelper.Setup(p => p.ParsePosition(roverPosition))
                .Returns(() =>
                {
                    if (validationResult.Any())
@@ -50,7 +51,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
                    return new RoverPosition(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<Direction>());
                });
 
-            deployRoverCommandHelper.Setup(p => p.ParseDirections(movementDirections))
+            landRoverCommandHelper.Setup(p => p.ParseDirections(movementDirections))
                .Returns(() =>
                {
                    if (validationResult.Any())
@@ -62,7 +63,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
 
 
 
-            var handler = new DeployRoverCommandHandler(plateauRepository.Object, deployRoverCommandHelper.Object);
+            var handler = new LandRoverCommandHandler(plateauRepository.Object, landRoverCommandHelper.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
             Assert.NotNull(result);
@@ -75,16 +76,16 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "", "" })]
         [InlineData(new object[] { "3 3 N", "" })]
         [InlineData(new object[] { "MMRMMRMRRM", "3 3 N" })]
-        public async Task DeployRover_Invalid_Format_Throw_Exception(string roverPosition, string movementDirections)
+        public async Task LandRover_Invalid_Format_Throw_Exception(string roverPosition, string movementDirections)
         {
             Size size = new(5, 5);
             Plateau plateau = new(size);
-            var command = new DeployRoverCommand(plateau.Id, roverPosition, movementDirections);
-            var handler = new DeployRoverCommandHandler(plateauRepository.Object, deployRoverCommandHelper.Object);
+            var command = new LandRoverCommand(plateau.Id, roverPosition, movementDirections);
+            var handler = new LandRoverCommandHandler(plateauRepository.Object, landRoverCommandHelper.Object);
             //RequestValidationBehavior fluent validation step
-            DeployRoverCommandValidator validationRules = new(new DeployRoverCommandHelper());
+            LandRoverCommandValidator validationRules = new(new LandRoverCommandHelper());
             var validationResult = validationRules.Validate(command).Errors.ToList();
-            deployRoverCommandHelper.Setup(p => p.ParsePosition(roverPosition))
+            landRoverCommandHelper.Setup(p => p.ParsePosition(roverPosition))
                .Returns(() =>
                {
                    if (validationResult.Any())
@@ -92,7 +93,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
                    return new RoverPosition(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<Direction>());
                });
 
-            deployRoverCommandHelper.Setup(p => p.ParseDirections(movementDirections))
+            landRoverCommandHelper.Setup(p => p.ParseDirections(movementDirections))
                .Returns(() =>
                {
                    if (validationResult.Any())
@@ -116,7 +117,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "1 1 N E" })]
         public void Validator_When_Set_Invalid_RoverPosition_Then_Return_False(string roverPosition)
         {
-            var command = new DeployRoverCommand(Guid.NewGuid(), roverPosition, "L");
+            var command = new LandRoverCommand(Guid.NewGuid(), roverPosition, "L");
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }
@@ -130,7 +131,7 @@ namespace MarsRover.UnitTests.Application.DeployRover
         [InlineData(new object[] { "lrmrmrmrl" })]
         public void Validator_When_Set_Invalid_RoverDirection_Then_Return_False(string directions)
         {
-            var command = new DeployRoverCommand(Guid.NewGuid(), "1 2 N", directions);
+            var command = new LandRoverCommand(Guid.NewGuid(), "1 2 N", directions);
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }
