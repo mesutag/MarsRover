@@ -28,7 +28,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
             if (AnyLandedRoverPosition(position.X, position.Y, GetRoverPositionsOnPlateau(rover.Id)))
                 throw new ConflictException($"There is another rover at landed position X:{position.X} Y:{position.Y}!");
             else if (IsOutOfBoundariesLandedPosition(position.X, position.Y))
-                throw new OutOfBoundaryException($"Landed position is out of plateau boundaries! Plateu area is width {Size.Width} and height {Size.Height}");
+                throw new OutOfPlateaueBoundaryException($"Landed position is out of plateau boundaries! Plateu area is width {Size.Width} and height {Size.Height}");
 
 
             rover.AddDirections(movementDirections);
@@ -64,7 +64,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
             if (AnyLandedRoverPosition(nextPosition.X, nextPosition.Y, anotherRoverPositions))
                 throw new ConflictException("Crash Alert! There is another rover at movement position.");
             else if (IsOutOfBoundariesLandedPosition(nextPosition.X, nextPosition.Y))
-                throw new OutOfBoundaryException("Rover's movement position is out of plateau boundaries!");
+                throw new OutOfPlateaueBoundaryException("Rover's movement position is out of plateau boundaries!");
         }
         public Rover GetRover(Guid roverId)
         {

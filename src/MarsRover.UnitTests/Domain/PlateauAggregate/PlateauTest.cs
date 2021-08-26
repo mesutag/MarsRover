@@ -39,7 +39,7 @@ namespace MarsRover.UnitTests.Domain
         {
             Plateau plateau = new(plateauBoundariesSize);
             void actual() => plateau.LandRover(roverPosition, new List<MovementDirection> { });
-            Assert.Throws<OutOfBoundaryException>(actual);
+            Assert.Throws<OutOfPlateaueBoundaryException>(actual);
         }
         [Theory]
         [InlineData(new object[] { 5, 5, 1, 5, Direction.N })]
@@ -53,7 +53,7 @@ namespace MarsRover.UnitTests.Domain
             List<RoverPosition> anotherRoverPositions = new();
 
             void actual() => plateau.CheckValidRoverMovement(rover, anotherRoverPositions);
-            Assert.Throws<OutOfBoundaryException>(actual);
+            Assert.Throws<OutOfPlateaueBoundaryException>(actual);
         }
         [Theory]
         [InlineData(new object[] { 5, 5, 1, 2, Direction.E, 2, 2 })]
