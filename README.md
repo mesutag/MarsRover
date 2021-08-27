@@ -1,4 +1,6 @@
 # Mars Rover
+A coding exercise of the exploration mission for Mars Rover using DDD pattern, CQRS.
+
 ## Part 1
 A squad of robotic rovers are to be landed by NASA on a plateau on Mars. This plateau, which is 
 curiously rectangular, must be navigated by the rovers so that their on board cameras can get a 
@@ -23,12 +25,14 @@ until the first one has finished moving.
 ## Output:
 The output for each rover should be its final co-ordinates and heading.
 Input and Output
+
 ### Test Input:
-5 5
-1 2 N
-LMLMLMLMM
-3 3 E
-MMRMMRMRRM
+5 5 \
+1 2 N \
+LMLMLMLMM \
+3 3 E \
+MMRMMRMRRM 
+
 ### Expected Output:
-1 3 N
-5 1 E
+1 3 N \
+5 1 E 
