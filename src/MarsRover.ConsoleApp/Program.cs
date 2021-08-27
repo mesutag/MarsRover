@@ -5,8 +5,8 @@ using System;
 using System.Threading.Tasks;
 using MarsRover.Application.Registry;
 using MarsRover.Application.Commands.CreatePlateau;
-using MarsRover.Application.Commands.LandRover;
 using MarsRover.Application.Commands.ExplorePlateau;
+using MarsRover.Application.Commands.DeployRover;
 
 namespace MarsRover.ConsoleApp
 {
@@ -39,10 +39,10 @@ namespace MarsRover.ConsoleApp
                             Console.WriteLine("Enter Rover Directions:");
                             var roverDirections = Console.ReadLine().Trim();
 
-                            var landRoverCommand = new LandRoverCommand(createPlateauResponse.Id, roverPosition, roverDirections);
-                            var landRoverResponse = await mediator.Send(landRoverCommand);
+                            var deployRoverCommand = new DeployRoverCommand(createPlateauResponse.Id, roverPosition, roverDirections);
+                            var deployRoverResponse = await mediator.Send(deployRoverCommand);
 
-                            Console.WriteLine("Do you want to land another rover this plateau? (Y/N)");
+                            Console.WriteLine("Do you want to deploy another rover this plateau? (Y/N)");
                             var result = Console.ReadLine().Trim();
                             if (result.Equals("N", StringComparison.InvariantCultureIgnoreCase))
                             {

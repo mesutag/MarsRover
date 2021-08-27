@@ -26,8 +26,8 @@ namespace MarsRover.UnitTests.Application.ExplorePlateau
             Plateau plateau = new(size);
             RoverPosition roverPosition = new(1, 2, Direction.E);
             List<MovementDirection> movementDirections = new() { MovementDirection.L };
-            plateau.LandRover(roverPosition, movementDirections);
-            var rover = plateau.LandedRovers.First();
+            plateau.DeployRover(roverPosition, movementDirections);
+            var rover = plateau.DeployedRovers.First();
 
             plateauRepository.Setup(p => p.FindAsync(plateau.Id)).ReturnsAsync(plateau);
             plateauRepository.Setup(p => p.UnitOfWork.SaveChangesAsync(default)).Returns(Task.FromResult(1));

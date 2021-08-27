@@ -11,7 +11,7 @@ namespace MarsRover.Inftrastructure.ConfigurationBuilder
             modelBuilder.Entity<Plateau>(builder =>
             {
                 builder.HasKey(p => p.Id);
-                var navigation = builder.Metadata.FindNavigation(nameof(Plateau.LandedRovers));
+                var navigation = builder.Metadata.FindNavigation(nameof(Plateau.DeployedRovers));
                 navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
                 navigation.SetIsEagerLoaded(true);
             });

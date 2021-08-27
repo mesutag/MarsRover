@@ -6,21 +6,21 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MarsRover.Application.Commands.LandRover
+namespace MarsRover.Application.Commands.DeployRover
 {
-    public class LandRoverCommandHandler : IRequestHandler<LandRoverCommand, CommandResponse>
+    public class DeployRoverCommandHandler : IRequestHandler<DeployRoverCommand, CommandResponse>
     {
         private readonly IPlateauRepository plateauRepository;
-        private readonly ILandRoverCommandHelper landRoverCommandHelper;
-        public LandRoverCommandHandler(IPlateauRepository plateauRepository, ILandRoverCommandHelper landRoverCommandHelper)
+        private readonly IDeployRoverCommandHelper deployRoverCommandHelper;
+        public DeployRoverCommandHandler(IPlateauRepository plateauRepository, IDeployRoverCommandHelper deployRoverCommandHelper)
         {
             this.plateauRepository = plateauRepository;
-            this.landRoverCommandHelper = landRoverCommandHelper;
+            this.deployRoverCommandHelper = deployRoverCommandHelper;
         }
-        public async Task<CommandResponse> Handle(LandRoverCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(DeployRoverCommand request, CancellationToken cancellationToken)
         {
-            RoverPosition position = landRoverCommandHelper.ParsePosition(request.RoverPosition);
-            List<MovementDirection> directions = landRoverCommandHelper.ParseDirections(request.RoverDirections);
+            RoverPosition position = deployRoverCommandHelper.ParsePosition(request.RoverPosition);
+            List<MovementDirection> directions = deployRoverCommandHelper.ParseDirections(request.RoverDirections);
 
             Plateau plateau = await plateauRepository.FindAsync(request.PlateauId);
 
@@ -28,7 +28,7 @@ namespace MarsRover.Application.Commands.LandRover
                 throw new CustomApplicationException("The Plateau is not found.");
 
 
-            plateau.LandRover(position, directions);
+            plateau.DeployRover(position, directions);
             plateauRepository.UpdatePlateau(plateau);
             await plateauRepository.UnitOfWork.SaveChangesAsync(default);
 

@@ -1,17 +1,17 @@
-﻿using MarsRover.Application.Commands.LandRover;
-using MarsRover.Application.Commands.LandRover;
+﻿using MarsRover.Application.Commands.DeployRover;
+using MarsRover.Application.Commands.DeployRover;
 using System;
 using Xunit;
 
-namespace MarsRover.UnitTests.Application.LandRover
+namespace MarsRover.UnitTests.Application.DeployRover
 {
-    public class LandRoverCommandValidatorTest
+    public class DeployRoverCommandValidatorTest
     {
-        private readonly LandRoverCommandValidator validator;
-        public LandRoverCommandValidatorTest()
+        private readonly DeployRoverCommandValidator validator;
+        public DeployRoverCommandValidatorTest()
         {
-            ILandRoverCommandHelper landRoverCommandHelper = new LandRoverCommandHelper();
-            validator = new LandRoverCommandValidator(landRoverCommandHelper);
+            IDeployRoverCommandHelper deployRoverCommandHelper = new DeployRoverCommandHelper();
+            validator = new DeployRoverCommandValidator(deployRoverCommandHelper);
         }
 
         [Theory]
@@ -25,7 +25,7 @@ namespace MarsRover.UnitTests.Application.LandRover
         [InlineData(new object[] { "1 1 N E" })]
         public void Validator_When_Set_Invalid_RoverPosition_Then_Return_False(string roverPosition)
         {
-            var command = new LandRoverCommand(Guid.NewGuid(), roverPosition, "L");
+            var command = new DeployRoverCommand(Guid.NewGuid(), roverPosition, "L");
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }
@@ -39,7 +39,7 @@ namespace MarsRover.UnitTests.Application.LandRover
         [InlineData(new object[] { "lrmrmrmrl" })]
         public void Validator_When_Set_Invalid_RoverDirection_Then_Return_False(string directions)
         {
-            var command = new LandRoverCommand(Guid.NewGuid(), "1 2 N", directions);
+            var command = new DeployRoverCommand(Guid.NewGuid(), "1 2 N", directions);
             var validationResult = validator.Validate(command);
             Assert.False(validationResult.IsValid);
         }

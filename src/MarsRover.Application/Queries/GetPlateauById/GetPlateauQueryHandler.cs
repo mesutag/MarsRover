@@ -20,7 +20,7 @@ namespace MarsRover.Application.Queries
             return new PlateauModel
             {
                 PlateauId = plateau.Id,
-                Rovers = plateau.LandedRovers.Select(rover => new RoverModel
+                Rovers = plateau.DeployedRovers.Select(rover => new RoverModel
                 {
                     RoverId = rover.Id,
                     RoverPosition = new RoverPositionModel

@@ -11,11 +11,11 @@ namespace MarsRover.UnitTests.Domain
     {
         [Theory]
         [MemberData(nameof(MovementListData.Data), MemberType = typeof(MovementListData))]
-        public void Execute_ExplorePlateau_Success(Size plateauSize, RoverPosition landedRoverPosition, List<MovementDirection> movementDirections, RoverPosition expectedPosition)
+        public void Execute_ExplorePlateau_Success(Size plateauSize, RoverPosition deployedRoverPosition, List<MovementDirection> movementDirections, RoverPosition expectedPosition)
         {
             Plateau plateau = new(plateauSize);
-            plateau.LandRover(landedRoverPosition, movementDirections);
-            var rover = plateau.LandedRovers.First();
+            plateau.DeployRover(deployedRoverPosition, movementDirections);
+            var rover = plateau.DeployedRovers.First();
 
             plateau.ExplorePlateau(rover.Id);
 
@@ -35,10 +35,10 @@ namespace MarsRover.UnitTests.Domain
 
         [Theory]
         [MemberData(nameof(PositionData.Data), MemberType = typeof(PositionData))]
-        public void Rover_When_Land_RoverPositionValues_OutOf_PlateauBoundaries_Throw_Exception(Size plateauBoundariesSize, RoverPosition roverPosition)
+        public void Rover_When_Deploy_RoverPositionValues_OutOf_PlateauBoundaries_Throw_Exception(Size plateauBoundariesSize, RoverPosition roverPosition)
         {
             Plateau plateau = new(plateauBoundariesSize);
-            void actual() => plateau.LandRover(roverPosition, new List<MovementDirection> { });
+            void actual() => plateau.DeployRover(roverPosition, new List<MovementDirection> { });
             Assert.Throws<OutOfPlateaueBoundaryException>(actual);
         }
         [Theory]
@@ -48,8 +48,8 @@ namespace MarsRover.UnitTests.Domain
         {
             Plateau plateau = new(new Size(width, height));
             RoverPosition roverPosition = new(x, y, direction);
-            plateau.LandRover(roverPosition, new List<MovementDirection> { MovementDirection.M });
-            Rover rover = plateau.LandedRovers[0];
+            plateau.DeployRover(roverPosition, new List<MovementDirection> { MovementDirection.M });
+            Rover rover = plateau.DeployedRovers[0];
             List<RoverPosition> anotherRoverPositions = new();
 
             void actual() => plateau.CheckValidRoverMovement(rover, anotherRoverPositions);
@@ -64,12 +64,12 @@ namespace MarsRover.UnitTests.Domain
         {
             Plateau plateau = new(new Size(width, height));
             RoverPosition roverPosition = new(x, y, direction);
-            plateau.LandRover(roverPosition, new List<MovementDirection> { MovementDirection.M });
+            plateau.DeployRover(roverPosition, new List<MovementDirection> { MovementDirection.M });
 
             RoverPosition anotherRoverPosition = new(anotherRoverPositionX, anotherRoverPositionY, Direction.N);
-            plateau.LandRover(anotherRoverPosition, new List<MovementDirection> { MovementDirection.M });
+            plateau.DeployRover(anotherRoverPosition, new List<MovementDirection> { MovementDirection.M });
 
-            Rover rover = plateau.LandedRovers[0];
+            Rover rover = plateau.DeployedRovers[0];
             void actual() => plateau.CheckValidRoverMovement(rover, new List<RoverPosition>() { anotherRoverPosition });
             Assert.Throws<ConflictException>(actual);
         }
@@ -86,8 +86,8 @@ namespace MarsRover.UnitTests.Domain
             Size size = new(plateauWidth, plateauHeight);
             Plateau plateau = new(size);
             RoverPosition roverPosition = new(x, y, inputDirection);
-            plateau.LandRover(roverPosition, new List<MovementDirection> { movementDirection });
-            var rover = plateau.LandedRovers[0];
+            plateau.DeployRover(roverPosition, new List<MovementDirection> { movementDirection });
+            var rover = plateau.DeployedRovers[0];
 
             plateau.ExplorePlateau(rover.Id);
 
@@ -122,7 +122,7 @@ namespace MarsRover.UnitTests.Domain
         [InlineData(new object[] { 5, 5, 6, 2 })]
         [InlineData(new object[] { 5, 5, 1, 6 })]
         [InlineData(new object[] { 5, 5, 1, -1 })]
-        public void IsOutOfBoundariesLandedPosition_Return_True(
+        public void IsOutOfBoundariesTheDestinationPosition_Return_True(
             int plateauWidth, int plateauHeight, int x, int y)
         {
             Size plateauSize = new(plateauWidth, plateauHeight);

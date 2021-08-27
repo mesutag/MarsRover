@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using MarsRover.Application.Commands.CreatePlateau;
 using MarsRover.Core.AggregateRoots.PlateauAggregate;
-using MarsRover.Application.Commands.LandRover;
+using MarsRover.Application.Commands.DeployRover;
 
 namespace MarsRover.Application.Registry
 {
@@ -32,14 +32,14 @@ namespace MarsRover.Application.Registry
         private static IServiceCollection AddValidations(this IServiceCollection services)
         {
             services.AddTransient<IValidator<CreatePlateauCommand>, CreatePlateauCommandValidator>();
-            services.AddTransient<IValidator<LandRoverCommand>, LandRoverCommandValidator>();
+            services.AddTransient<IValidator<DeployRoverCommand>, DeployRoverCommandValidator>();
             return services;
 
         }
         private static IServiceCollection AddCommandHelpers(this IServiceCollection services)
         {
             services.AddScoped<ICreatePlateauCommandHelper, CreatePlateauCommandHelper>();
-            services.AddScoped<ILandRoverCommandHelper, LandRoverCommandHelper>();
+            services.AddScoped<IDeployRoverCommandHelper, DeployRoverCommandHelper>();
             return services;
 
         }

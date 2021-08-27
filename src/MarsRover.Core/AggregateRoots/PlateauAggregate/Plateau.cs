@@ -10,30 +10,30 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
     public class Plateau : Entity, IAggregateRoot
     {
         public Size Size { get; private set; }
-        private readonly List<Rover> _landedRovers;
-        public IReadOnlyList<Rover> LandedRovers => _landedRovers;
+        private readonly List<Rover> _deployedRovers;
+        public IReadOnlyList<Rover> DeployedRovers => _deployedRovers;
 
         protected Plateau()
         {
-            _landedRovers = new List<Rover>();
+            _deployedRovers = new List<Rover>();
         }
         public Plateau(Size size) : this()
         {
             SetSize(size);
         }
 
-        public void LandRover(RoverPosition position, List<MovementDirection> movementDirections)
+        public void DeployRover(RoverPosition position, List<MovementDirection> movementDirections)
         {
             Rover rover = new(position);
             if (AnyAnotherRoverDestinationPosition(position.X, position.Y, GetRoverPositionsOnPlateau(rover.Id)))
-                throw new ConflictException($"There is another rover at landed position X:{position.X} Y:{position.Y}!");
+                throw new ConflictException($"There is another rover at deployed position X:{position.X} Y:{position.Y}!");
             else if (IsOutOfBoundariesTheDestinationPosition(position.X, position.Y))
-                throw new OutOfPlateaueBoundaryException($"Landed position is out of plateau boundaries! Plateu area is width {Size.Width} and height {Size.Height}");
+                throw new OutOfPlateaueBoundaryException($"Deployed position is out of plateau boundaries! Plateu area is width {Size.Width} and height {Size.Height}");
 
 
             rover.AddDirections(movementDirections);
 
-            _landedRovers.Add(rover);
+            _deployedRovers.Add(rover);
         }
         public void ExplorePlateau(Guid roverId)
         {
@@ -68,7 +68,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
         }
         private Rover GetRover(Guid roverId)
         {
-            return _landedRovers.FirstOrDefault(p => p.Id == roverId);
+            return _deployedRovers.FirstOrDefault(p => p.Id == roverId);
         }
 
         private void SetSize(Size size)
@@ -80,7 +80,7 @@ namespace MarsRover.Core.AggregateRoots.PlateauAggregate
         }
         private List<RoverPosition> GetRoverPositionsOnPlateau(Guid excludedRoverId)
         {
-            return LandedRovers.Where(p => p.Id != excludedRoverId).Select(p => p.Position).ToList();
+            return DeployedRovers.Where(p => p.Id != excludedRoverId).Select(p => p.Position).ToList();
         }
         public bool AnyAnotherRoverDestinationPosition(int x, int y, List<RoverPosition> anotherRoverPositions)
         {

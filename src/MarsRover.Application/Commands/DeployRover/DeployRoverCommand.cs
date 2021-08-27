@@ -2,14 +2,14 @@
 using MediatR;
 using System;
 
-namespace MarsRover.Application.Commands.LandRover
+namespace MarsRover.Application.Commands.DeployRover
 {
-    public class LandRoverCommand : IRequest<CommandResponse>
+    public class DeployRoverCommand : IRequest<CommandResponse>
     {
         public Guid PlateauId { get; internal set; }
         public string RoverPosition { get; internal set; }
         public string RoverDirections { get; set; }
-        public LandRoverCommand(Guid plateauId, string roverPosition, string roverDirections)
+        public DeployRoverCommand(Guid plateauId, string roverPosition, string roverDirections)
         {
             PlateauId = plateauId;
             RoverPosition = roverPosition;

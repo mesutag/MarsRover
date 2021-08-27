@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace MarsRover.Application.Commands.LandRover
+namespace MarsRover.Application.Commands.DeployRover
 {
-    public class LandRoverCommandHelper : ILandRoverCommandHelper
+    public class DeployRoverCommandHelper : IDeployRoverCommandHelper
     {
         public RoverPosition ParsePosition(string roverPositionInput)
         {
