@@ -1,33 +1,23 @@
 ﻿using MarsRover.Application.Behaivor;
-using MarsRover.Inftrastructure;
-using MarsRover.Inftrastructure.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using MarsRover.Application.Commands.CreatePlateau;
-using MarsRover.Core.AggregateRoots.PlateauAggregate;
 using MarsRover.Application.Commands.DeployRover;
 
 namespace MarsRover.Application.Registry
 {
-    public static class ApplicationRegistryExtension
+    public static class RegistryExtension
     {
         public static IServiceCollection ConfigureApplication(this IServiceCollection services)
         {
             services.AddMediatR(typeof(CreatePlateauCommandHandler));
-            services.AddDbContext<MarsRoverContext>(options => options.UseInMemoryDatabase(databaseName: "MarsRoverDatabase"));
-            services.AddRepositories();
             services.AddValidations();
             services.AddCommandHelpers();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
             return services;
 
-        }
-        private static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
-            services.AddScoped<IPlateauRepository, PlateauRepository>();
-            return services;
         }
         private static IServiceCollection AddValidations(this IServiceCollection services)
         {

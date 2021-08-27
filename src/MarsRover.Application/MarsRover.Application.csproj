@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MarsRover.Core\MarsRover.Core.csproj" />
-    <ProjectReference Include="..\MarsRover.Inftrastructure\MarsRover.Inftrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,10 +3,11 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using MarsRover.Application.Registry;
 using MarsRover.Application.Commands.CreatePlateau;
 using MarsRover.Application.Commands.ExplorePlateau;
 using MarsRover.Application.Commands.DeployRover;
+using MarsRover.Inftrastructure.Registry;
+using MarsRover.Application.Registry;
 
 namespace MarsRover.ConsoleApp
 {
@@ -99,7 +100,12 @@ namespace MarsRover.ConsoleApp
         static IServiceProvider Initialize()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
+           
             serviceCollection.ConfigureApplication();
+            serviceCollection.ConfigureInfrastructure(opt => {
+                opt.DatabaseName = "MarsRoverDatabase";
+            });
+
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
             return serviceProvider;
 
